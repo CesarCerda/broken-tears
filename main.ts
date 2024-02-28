@@ -1,8 +1,8 @@
 namespace SpriteKind {
     export const background = SpriteKind.create()
 }
-function Background_scroll (myImage: Image) {
-    background_2 = myImage
+function Background_scroll (score: number) {
+    background_2 = score
     MC_animation_start = sprites.create(img`
         ................................................................................................................................................................
         ................................................................................................................................................................
@@ -1864,9 +1864,14 @@ function Background_scroll (myImage: Image) {
         scroller.scrollBackgroundWithSpeed(-20, 0, scroller.BackgroundLayer.Layer3)
     }
 }
+function enemy_dangers_and_boss (Score_2: number) {
+    if (info.score() == 0) {
+    	
+    }
+}
 let MC: Sprite = null
 let MC_animation_start: Sprite = null
-let background_2: Image = null
+let background_2 = 0
 let STARTING: Sprite = null
 Keybinds.setSimulatorKeymap(
 Keybinds.PlayerNumber.ONE,
@@ -4149,4 +4154,9 @@ if (controller.right.isPressed()) {
     sprites.destroy(STARTING)
     sprites.destroy(START)
 }
-Background_scroll(background_2)
+Background_scroll(1)
+forever(function () {
+    if (MC.y < 80) {
+        MC.y += 2
+    }
+})
