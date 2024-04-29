@@ -2,7 +2,17 @@ namespace SpriteKind {
     export const background = SpriteKind.create()
     export const weapon = SpriteKind.create()
     export const hitbox = SpriteKind.create()
+    export const weakhealth = SpriteKind.create()
+    export const goodhealth = SpriteKind.create()
+    export const speedy = SpriteKind.create()
+    export const animation = SpriteKind.create()
+    export const nothing = SpriteKind.create()
 }
+sprites.onOverlap(SpriteKind.Player, SpriteKind.speedy, function (sprite, otherSprite) {
+    MC_with_sword.ax += 10
+    MC_with_sword.ay += 10
+    sprites.destroy(otherSprite)
+})
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     if (MC_with_sword) {
         if (controller.left.isPressed()) {
@@ -780,10 +790,14 @@ sprites.onCreated(SpriteKind.hitbox, function (sprite) {
         sprites.destroy(sprite)
     }
 })
+sprites.onOverlap(SpriteKind.Player, SpriteKind.weakhealth, function (sprite, otherSprite) {
+    info.changeLifeBy(1)
+    sprites.destroy(otherSprite)
+})
 // Background scrolll for different map levels This was inspired by the code my teacher provided
 function Background_scroller (score: number) {
     background_2 = score
-    if (info.score() == 0) {
+    if (info.score() == 1) {
         scroller.setLayerImage(scroller.BackgroundLayer.Layer0, img`
             9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
             9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
@@ -1277,7 +1291,7 @@ function Background_scroller (score: number) {
         scroller.scrollBackgroundWithSpeed(-20, 0, scroller.BackgroundLayer.Layer2)
         scroller.scrollBackgroundWithSpeed(-20, 0, scroller.BackgroundLayer.Layer3)
     }
-    if (info.score() == 9) {
+    if (info.score() == 10) {
         scroller.setLayerImage(scroller.BackgroundLayer.Layer0, img`
             aaaaaaaaafaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaafaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaffaaaaaaaaaaaaaaaaaaaaaaaaaaaafaaaaaaaaaaaaaa
             aaaaaaaaafaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaafaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaafffffffffffffffaaaaaaaaaaaaaaaaaaaaaaaaaaaaaafaaaaaaaaaaaaaa
@@ -1771,7 +1785,7 @@ function Background_scroller (score: number) {
         scroller.scrollBackgroundWithSpeed(-20, 0, scroller.BackgroundLayer.Layer2)
         scroller.scrollBackgroundWithSpeed(-20, 0, scroller.BackgroundLayer.Layer3)
     }
-    if (info.score() == 24) {
+    if (info.score() == 25) {
         scroller.setLayerImage(scroller.BackgroundLayer.Layer0, img`
             ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
             ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
@@ -2266,14 +2280,60 @@ function Background_scroller (score: number) {
         scroller.scrollBackgroundWithSpeed(-20, 0, scroller.BackgroundLayer.Layer3)
     }
 }
-sprites.onOverlap(SpriteKind.hitbox, SpriteKind.hitbox, function (sprite, otherSprite) {
-    sprites.destroy(otherSprite)
-    info.changeScoreBy(1)
-})
+function special_things (score3: number) {
+    boost = score3
+    if (info.score() == 10) {
+        boosters = list._pickRandom()
+        boosters.setPosition(75, 96)
+    }
+    if (info.score() == 25) {
+        boosters = list._pickRandom()
+        boosters.setPosition(75, 96)
+    }
+    if (info.score() == 35) {
+        boosters = list._pickRandom()
+        boosters.setPosition(75, 96)
+    }
+}
 // This will be the enemy spawning for level
 function enemy_dangers_and_boss (Score_2: number) {
-    if (info.score() == 0) {
-        Teary_knight = sprites.create(assets.image`tery knight`, SpriteKind.Enemy)
+    enemies = Score_2
+    if (info.score() == 1) {
+        for (let index = 0; index < 3; index++) {
+            for (let index = 0; index < 3; index++) {
+                Teary_knight = sprites.create(assets.image`tery knight`, SpriteKind.Enemy)
+                Teary_knight.setStayInScreen(true)
+                Teary_knight.follow(MC_with_sword)
+                Teary_knight.setVelocity(10, 11)
+                Teary_knight.setPosition(160, randint(80, 120))
+                Teary_knight.follow(MC_with_sword)
+                pause(2000)
+            }
+        }
+    }
+    if (info.score() == 10) {
+        for (let index = 0; index < 3; index++) {
+            for (let index = 0; index < 5; index++) {
+                Teary_knight = sprites.create(assets.image`tery knight`, SpriteKind.Enemy)
+                Teary_knight.follow(MC_with_sword)
+                Teary_knight.setVelocity(10, 11)
+                Teary_knight.setPosition(160, randint(80, 120))
+                Teary_knight.follow(MC_with_sword)
+                pause(1500)
+            }
+        }
+    }
+    if (info.score() == 25) {
+        for (let index = 0; index < 3; index++) {
+            for (let index = 0; index < 6; index++) {
+                Teary_knight = sprites.create(assets.image`tery knight`, SpriteKind.Enemy)
+                Teary_knight.follow(MC_with_sword)
+                Teary_knight.setVelocity(10, 11)
+                Teary_knight.setPosition(160, randint(80, 120))
+                Teary_knight.follow(MC_with_sword)
+                pause(1000)
+            }
+        }
     }
 }
 controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
@@ -2842,6 +2902,7 @@ controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
 })
 sprites.onOverlap(SpriteKind.Enemy, SpriteKind.Player, function (sprite, otherSprite) {
     info.changeLifeBy(-1)
+    pause(750)
 })
 // The purpose of this is to spawn in the beginning items like the player and sword
 function Spawning_in (character_spawn_in: Sprite) {
@@ -2966,7 +3027,7 @@ function Spawning_in (character_spawn_in: Sprite) {
         ................................................................................................................................................................
         ................................................................................................................................................................
         ................................................................................................................................................................
-        `, SpriteKind.Player)
+        `, SpriteKind.animation)
     scene.setBackgroundImage(img`
         999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999.
         999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999.
@@ -4181,10 +4242,10 @@ function Spawning_in (character_spawn_in: Sprite) {
         ................................................................................................................................................................
         ................................................................................................................................................................
         `],
-    500,
+    200,
     false
     )
-    pause(5000)
+    pause(2000)
     sprites.destroy(MC_animation_start)
     MC = sprites.create(img`
         ................
@@ -5442,11 +5503,11 @@ function Spawning_in (character_spawn_in: Sprite) {
         ................................................................................................................................................................
         ................................................................................................................................................................
         `],
-    500,
+    200,
     false
     )
     Sword_spawning_animation.setPosition(0, 0)
-    pause(4600)
+    pause(2000)
     sword = sprites.create(img`
         . . . . . . . . . . . . . . . . 
         . . . . . . . . . . . . . . . . 
@@ -5468,6 +5529,14 @@ function Spawning_in (character_spawn_in: Sprite) {
     sword.setPosition(70, 97)
     pause(500)
 }
+sprites.onOverlap(SpriteKind.hitbox, SpriteKind.Enemy, function (sprite, otherSprite) {
+    sprites.destroy(otherSprite, effects.spray, 500)
+    info.changeScoreBy(1)
+})
+sprites.onOverlap(SpriteKind.Player, SpriteKind.goodhealth, function (sprite, otherSprite) {
+    info.changeLifeBy(3)
+    sprites.destroy(otherSprite)
+})
 // In order to equip the sword
 sprites.onOverlap(SpriteKind.Player, SpriteKind.weapon, function (sprite, otherSprite) {
     sprites.destroy(sprite)
@@ -5496,12 +5565,16 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.weapon, function (sprite, otherS
     MC_with_sword.setPosition(70, 97)
     controller.moveSprite(MC_with_sword)
     MC_with_sword.setStayInScreen(true)
-    MC_with_sword.setStayInScreen(true)
+    info.setScore(1)
+    info.setLife(10)
 })
 let sword: Sprite = null
 let Sword_spawning_animation: Sprite = null
 let MC_animation_start: Sprite = null
 let Teary_knight: Sprite = null
+let enemies = 0
+let boosters: Sprite = null
+let boost = 0
 let background_2 = 0
 let MC: Sprite = null
 let Attack: Sprite = null
@@ -5509,6 +5582,7 @@ let Attack_left: Sprite = null
 let MC_with_sword: Sprite = null
 let mySprite: Sprite = null
 let STARTING: Sprite = null
+let list: Sprite[] = []
 Keybinds.setSimulatorKeymap(
 Keybinds.PlayerNumber.ONE,
 Keybinds.CustomKey.W,
@@ -5518,6 +5592,80 @@ Keybinds.CustomKey.D,
 Keybinds.CustomKey.LEFT_CLICK,
 Keybinds.CustomKey.RIGHT_CLICK
 )
+list = [
+sprites.create(img`
+    . . . . . . . 2 . . . . . . . . 
+    . . . . . . 2 2 2 . . . . . . . 
+    . . . . . . 2 2 f 2 . . . . . . 
+    . . . . . . 2 2 f 2 2 2 . . . . 
+    . . . . . . 2 f 5 f f 2 2 . . . 
+    . . . . . 2 2 2 2 2 f 2 2 . . . 
+    . . . . . 2 2 2 2 2 2 1 2 2 . . 
+    . . . . . 2 2 2 2 2 2 1 2 2 . . 
+    . . . . 2 2 2 2 2 5 2 1 1 2 . . 
+    . . . 2 2 2 2 f f f 2 2 2 2 2 . 
+    . . 2 2 2 2 2 2 2 f f 2 2 2 2 . 
+    . . 2 2 2 2 f 5 2 2 2 2 2 2 2 . 
+    . . . 2 2 f f 2 2 2 2 2 2 2 . . 
+    . . . . 2 2 2 2 2 2 2 2 2 2 . . 
+    . . . . . . . 2 2 2 2 2 . . . . 
+    . . . . . . . . . . . . . . . . 
+    `, SpriteKind.weakhealth),
+sprites.create(img`
+    . . . . . . 9 9 9 9 . . . . . . 
+    . . . . . . 9 9 9 9 . . . . . . 
+    . . . . 9 9 9 9 9 9 9 . . . . . 
+    . . . 9 9 9 9 9 9 9 9 9 . . . . 
+    . . . 9 9 9 9 9 9 9 9 9 9 . . . 
+    . . 9 9 9 9 9 9 9 9 9 1 9 9 . . 
+    . 9 9 9 9 9 9 9 9 9 9 1 9 9 9 . 
+    . 9 9 9 9 9 9 9 9 9 9 1 1 9 9 . 
+    . 9 9 9 9 9 9 9 9 9 9 9 9 9 9 . 
+    . 9 9 9 9 9 9 9 9 9 9 9 9 9 9 . 
+    . 9 9 1 9 9 9 9 9 9 9 9 9 9 9 . 
+    . 9 9 1 1 9 9 9 9 9 9 9 9 9 9 . 
+    . . 9 9 9 9 9 9 9 9 9 9 9 9 9 . 
+    . . . 9 9 9 9 9 9 9 9 9 9 9 . . 
+    . . . . 9 9 9 9 9 9 9 9 9 . . . 
+    . . . . . . 9 9 9 9 . . . . . . 
+    `, SpriteKind.goodhealth),
+sprites.create(img`
+    . . . . . . 9 9 9 9 . . . . . . 
+    . . . . . . 9 9 9 9 . . . . . . 
+    . . . . 9 9 9 9 9 9 9 . . . . . 
+    . . . 9 9 9 9 9 5 9 9 9 . . . . 
+    . . . 9 9 9 9 5 5 9 9 9 9 . . . 
+    . . 9 9 9 9 5 5 9 9 9 1 9 9 . . 
+    . 9 9 9 9 5 5 9 9 9 9 1 9 9 9 . 
+    . 9 9 9 9 5 5 9 9 9 9 1 1 9 9 . 
+    . 9 9 9 9 9 5 9 9 9 9 9 9 9 9 . 
+    . 9 9 9 9 9 5 5 9 9 9 9 9 9 9 . 
+    . 9 9 1 9 9 9 5 9 9 9 9 9 9 9 . 
+    . 9 9 1 1 9 9 5 5 9 9 9 9 9 9 . 
+    . . 9 9 9 9 9 9 5 9 9 9 9 9 9 . 
+    . . . 9 9 9 9 9 9 9 9 9 9 9 . . 
+    . . . . 9 9 9 9 9 9 9 9 9 . . . 
+    . . . . . . 9 9 9 9 . . . . . . 
+    `, SpriteKind.speedy),
+sprites.create(img`
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    `, SpriteKind.nothing)
+]
 scene.setBackgroundImage(assets.image`starting screen`)
 let START = sprites.create(img`
     . . . . . . . . . . . . . . . . 
@@ -7792,9 +7940,6 @@ if (controller.right.isPressed()) {
     sprites.destroy(START)
 }
 Spawning_in(mySprite)
-forever(function () {
-    Background_scroller(info.score())
-})
 // Prevents player from looking as if it is flying
 forever(function () {
     if (MC_with_sword) {
@@ -7807,4 +7952,13 @@ forever(function () {
             MC.y += 2
         }
     }
+})
+forever(function () {
+    enemy_dangers_and_boss(info.score())
+})
+forever(function () {
+    Background_scroller(info.score())
+})
+forever(function () {
+    special_things(info.score())
 })
