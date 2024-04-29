@@ -783,7 +783,7 @@ sprites.onCreated(SpriteKind.hitbox, function (sprite) {
 // Background scrolll for different map levels This was inspired by the code my teacher provided
 function Background_scroller (score: number) {
     background_2 = score
-    if (info.score() == 1) {
+    if (info.score() == 0) {
         scroller.setLayerImage(scroller.BackgroundLayer.Layer0, img`
             9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
             9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
@@ -1277,7 +1277,7 @@ function Background_scroller (score: number) {
         scroller.scrollBackgroundWithSpeed(-20, 0, scroller.BackgroundLayer.Layer2)
         scroller.scrollBackgroundWithSpeed(-20, 0, scroller.BackgroundLayer.Layer3)
     }
-    if (info.score() == 2) {
+    if (info.score() == 9) {
         scroller.setLayerImage(scroller.BackgroundLayer.Layer0, img`
             aaaaaaaaafaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaafaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaffaaaaaaaaaaaaaaaaaaaaaaaaaaaafaaaaaaaaaaaaaa
             aaaaaaaaafaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaafaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaafffffffffffffffaaaaaaaaaaaaaaaaaaaaaaaaaaaaaafaaaaaaaaaaaaaa
@@ -1771,7 +1771,7 @@ function Background_scroller (score: number) {
         scroller.scrollBackgroundWithSpeed(-20, 0, scroller.BackgroundLayer.Layer2)
         scroller.scrollBackgroundWithSpeed(-20, 0, scroller.BackgroundLayer.Layer3)
     }
-    if (info.score() == 3) {
+    if (info.score() == 24) {
         scroller.setLayerImage(scroller.BackgroundLayer.Layer0, img`
             ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
             ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
@@ -2268,11 +2268,12 @@ function Background_scroller (score: number) {
 }
 sprites.onOverlap(SpriteKind.hitbox, SpriteKind.hitbox, function (sprite, otherSprite) {
     sprites.destroy(otherSprite)
+    info.changeScoreBy(1)
 })
 // This will be the enemy spawning for level
 function enemy_dangers_and_boss (Score_2: number) {
     if (info.score() == 0) {
-    	
+        Teary_knight = sprites.create(assets.image`tery knight`, SpriteKind.Enemy)
     }
 }
 controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
@@ -2838,6 +2839,9 @@ controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
             )
         }
     }
+})
+sprites.onOverlap(SpriteKind.Enemy, SpriteKind.Player, function (sprite, otherSprite) {
+    info.changeLifeBy(-1)
 })
 // The purpose of this is to spawn in the beginning items like the player and sword
 function Spawning_in (character_spawn_in: Sprite) {
@@ -5493,11 +5497,11 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.weapon, function (sprite, otherS
     controller.moveSprite(MC_with_sword)
     MC_with_sword.setStayInScreen(true)
     MC_with_sword.setStayInScreen(true)
-    info.setScore(1)
 })
 let sword: Sprite = null
 let Sword_spawning_animation: Sprite = null
 let MC_animation_start: Sprite = null
+let Teary_knight: Sprite = null
 let background_2 = 0
 let MC: Sprite = null
 let Attack: Sprite = null

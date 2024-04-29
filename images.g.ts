@@ -145,6 +145,25 @@ ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
 . . . . . f f f f f f . . . . . 
 . . . . . f f . . f f . . . . . 
 `;
+            case "image3":
+            case "tery knight":return img`
+. . . . . . b f f b . . . . . . 
+. . . . 2 b f f f f b b . . . . 
+. . . b f b b b b b b b b . . . 
+. . f b b f f f f f f b b f . . 
+. . f b f f f f f f f f b f . . 
+. . b b f b b b b b b f b b . . 
+. . b f b b b b b b b b f b . . 
+. b f b b b 2 b b 2 b b b f b . 
+. b b b b 1 2 d d 2 1 b b b b . 
+. . f b b 8 d d d 8 d b b f . . 
+. . . f b b 8 b b b 8 b f . . . 
+. . e b f 8 b b b 8 b f b e . . 
+. . b d f f 8 f f f 8 f d b . . 
+. . b b f 8 b f f 8 b f b b . . 
+. . . . . f f f f f f . . . . . 
+. . . . . f f . . f f . . . . . 
+`;
         }
         return null;
     })
