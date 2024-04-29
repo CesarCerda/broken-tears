@@ -7,10 +7,11 @@ namespace SpriteKind {
     export const speedy = SpriteKind.create()
     export const animation = SpriteKind.create()
     export const nothing = SpriteKind.create()
+    export const s = SpriteKind.create()
 }
 sprites.onOverlap(SpriteKind.Player, SpriteKind.speedy, function (sprite, otherSprite) {
-    MC_with_sword.ax += 10
-    MC_with_sword.ay += 10
+    MC_with_sword.vx += 10
+    MC_with_sword.vy += 10
     sprites.destroy(otherSprite)
 })
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
@@ -2280,21 +2281,14 @@ function Background_scroller (score: number) {
         scroller.scrollBackgroundWithSpeed(-20, 0, scroller.BackgroundLayer.Layer3)
     }
 }
-function special_things (score3: number) {
-    boost = score3
-    if (info.score() == 10) {
-        boosters = list._pickRandom()
-        boosters.setPosition(75, 96)
-    }
-    if (info.score() == 25) {
-        boosters = list._pickRandom()
-        boosters.setPosition(75, 96)
-    }
-    if (info.score() == 35) {
-        boosters = list._pickRandom()
-        boosters.setPosition(75, 96)
-    }
-}
+info.onScore(25, function () {
+    boosters = list._pickRandom()
+    boosters.setPosition(76, 82)
+})
+info.onScore(10, function () {
+    boosters = list._pickRandom()
+    boosters.setPosition(76, 82)
+})
 // This will be the enemy spawning for level
 function enemy_dangers_and_boss (Score_2: number) {
     enemies = Score_2
@@ -5533,6 +5527,10 @@ sprites.onOverlap(SpriteKind.hitbox, SpriteKind.Enemy, function (sprite, otherSp
     sprites.destroy(otherSprite, effects.spray, 500)
     info.changeScoreBy(1)
 })
+info.onScore(35, function () {
+    boosters = list._pickRandom()
+    boosters.setPosition(76, 82)
+})
 sprites.onOverlap(SpriteKind.Player, SpriteKind.goodhealth, function (sprite, otherSprite) {
     info.changeLifeBy(3)
     sprites.destroy(otherSprite)
@@ -5574,7 +5572,6 @@ let MC_animation_start: Sprite = null
 let Teary_knight: Sprite = null
 let enemies = 0
 let boosters: Sprite = null
-let boost = 0
 let background_2 = 0
 let MC: Sprite = null
 let Attack: Sprite = null
@@ -5592,8 +5589,8 @@ Keybinds.CustomKey.D,
 Keybinds.CustomKey.LEFT_CLICK,
 Keybinds.CustomKey.RIGHT_CLICK
 )
-list = [
-sprites.create(img`
+scene.setBackgroundImage(assets.image`starting screen`)
+list = [sprites.create(img`
     . . . . . . . 2 . . . . . . . . 
     . . . . . . 2 2 2 . . . . . . . 
     . . . . . . 2 2 f 2 . . . . . . 
@@ -5610,8 +5607,7 @@ sprites.create(img`
     . . . . 2 2 2 2 2 2 2 2 2 2 . . 
     . . . . . . . 2 2 2 2 2 . . . . 
     . . . . . . . . . . . . . . . . 
-    `, SpriteKind.weakhealth),
-sprites.create(img`
+    `, SpriteKind.weakhealth), sprites.create(img`
     . . . . . . 9 9 9 9 . . . . . . 
     . . . . . . 9 9 9 9 . . . . . . 
     . . . . 9 9 9 9 9 9 9 . . . . . 
@@ -5628,8 +5624,7 @@ sprites.create(img`
     . . . 9 9 9 9 9 9 9 9 9 9 9 . . 
     . . . . 9 9 9 9 9 9 9 9 9 . . . 
     . . . . . . 9 9 9 9 . . . . . . 
-    `, SpriteKind.goodhealth),
-sprites.create(img`
+    `, SpriteKind.goodhealth), sprites.create(img`
     . . . . . . 9 9 9 9 . . . . . . 
     . . . . . . 9 9 9 9 . . . . . . 
     . . . . 9 9 9 9 9 9 9 . . . . . 
@@ -5646,27 +5641,9 @@ sprites.create(img`
     . . . 9 9 9 9 9 9 9 9 9 9 9 . . 
     . . . . 9 9 9 9 9 9 9 9 9 . . . 
     . . . . . . 9 9 9 9 . . . . . . 
-    `, SpriteKind.speedy),
-sprites.create(img`
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    . . . . . . . . . . . . . . . . 
-    `, SpriteKind.nothing)
-]
-scene.setBackgroundImage(assets.image`starting screen`)
+    `, SpriteKind.speedy)]
+let plaese_work = list
+plaese_work.setPosition(160, 0)
 let START = sprites.create(img`
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . . . 
@@ -7958,7 +7935,4 @@ forever(function () {
 })
 forever(function () {
     Background_scroller(info.score())
-})
-forever(function () {
-    special_things(info.score())
 })
