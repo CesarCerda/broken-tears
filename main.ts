@@ -2973,40 +2973,34 @@ sprites.onOverlap(SpriteKind.Enemy, SpriteKind.Player, function (sprite, otherSp
 function enemy_waves (Score_2: number) {
     enemies = Score_2
     if (info.score() == 1) {
-        for (let index = 0; index < 3; index++) {
-            for (let index = 0; index < 3; index++) {
-                Teary_knight = sprites.create(assets.image`tery knight`, SpriteKind.Enemy)
-                Teary_knight.setStayInScreen(true)
-                Teary_knight.follow(MC_with_sword)
-                Teary_knight.setVelocity(10, 11)
-                Teary_knight.setPosition(160, randint(80, 120))
-                Teary_knight.follow(MC_with_sword)
-                pause(2000)
-            }
+        for (let index = 0; index < 9; index++) {
+            Teary_knight = sprites.create(assets.image`tery knight`, SpriteKind.Enemy)
+            Teary_knight.setStayInScreen(true)
+            Teary_knight.follow(MC_with_sword)
+            Teary_knight.setVelocity(10, 11)
+            Teary_knight.setPosition(160, randint(80, 120))
+            Teary_knight.follow(MC_with_sword)
+            pause(2000)
         }
     }
     if (info.score() == 10) {
-        for (let index = 0; index < 3; index++) {
-            for (let index = 0; index < 5; index++) {
-                Teary_knight = sprites.create(assets.image`tery knight`, SpriteKind.Enemy)
-                Teary_knight.follow(MC_with_sword)
-                Teary_knight.setVelocity(10, 11)
-                Teary_knight.setPosition(160, randint(80, 120))
-                Teary_knight.follow(MC_with_sword)
-                pause(1500)
-            }
+        for (let index = 0; index < 15; index++) {
+            Teary_knight = sprites.create(assets.image`tery knight`, SpriteKind.Enemy)
+            Teary_knight.follow(MC_with_sword)
+            Teary_knight.setVelocity(10, 11)
+            Teary_knight.setPosition(160, randint(80, 120))
+            Teary_knight.follow(MC_with_sword)
+            pause(1500)
         }
     }
     if (info.score() == 25) {
-        for (let index = 0; index < 3; index++) {
-            for (let index = 0; index < 6; index++) {
-                Teary_knight = sprites.create(assets.image`tery knight`, SpriteKind.Enemy)
-                Teary_knight.follow(MC_with_sword)
-                Teary_knight.setVelocity(10, 11)
-                Teary_knight.setPosition(160, randint(80, 120))
-                Teary_knight.follow(MC_with_sword)
-                pause(1000)
-            }
+        for (let index = 0; index < 18; index++) {
+            Teary_knight = sprites.create(assets.image`tery knight`, SpriteKind.Enemy)
+            Teary_knight.follow(MC_with_sword)
+            Teary_knight.setVelocity(10, 11)
+            Teary_knight.setPosition(160, randint(80, 120))
+            Teary_knight.follow(MC_with_sword)
+            pause(1000)
         }
     }
 }
