@@ -4,6 +4,11 @@
         "mimeType": "image/x-mkcd-f4",
         "displayName": "starting screen"
     },
+    "image2": {
+        "data": "hwQQABAAAAAAAAAAAAAAAAAAALALAAAAAPC/+/vguwAAu7u/u7+9ACC//7u7+/8AsPu/u4GLj//7+78r0ri4///7v7vdu/8P//u/u927/w/7+78rgouP/7D7v7vRuLj/sLv/u7v7/wAAu7u/u7+9AADwv/v74LsAAAAAsAsAAAAAAAAAAAAAAA==",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "teary knight"
+    },
     "anim1": {
         "namespace": "myAnimations",
         "id": "anim1",
