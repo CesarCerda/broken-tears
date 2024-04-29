@@ -8,11 +8,16 @@ namespace SpriteKind {
     export const animation = SpriteKind.create()
     export const nothing = SpriteKind.create()
     export const s = SpriteKind.create()
+    export const Border = SpriteKind.create()
+    export const end = SpriteKind.create()
 }
 sprites.onOverlap(SpriteKind.Player, SpriteKind.speedy, function (sprite, otherSprite) {
     MC_with_sword.vx += 10
     MC_with_sword.vy += 10
     sprites.destroy(otherSprite)
+})
+sprites.onOverlap(SpriteKind.weakhealth, SpriteKind.Border, function (sprite, otherSprite) {
+    sprites.destroy(sprite)
 })
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     if (MC_with_sword) {
@@ -794,6 +799,9 @@ sprites.onCreated(SpriteKind.hitbox, function (sprite) {
 sprites.onOverlap(SpriteKind.Player, SpriteKind.weakhealth, function (sprite, otherSprite) {
     info.changeLifeBy(1)
     sprites.destroy(otherSprite)
+})
+sprites.onOverlap(SpriteKind.speedy, SpriteKind.Border, function (sprite, otherSprite) {
+    sprites.destroy(sprite)
 })
 // Background scrolll for different map levels This was inspired by the code my teacher provided
 function Background_scroller (score: number) {
@@ -2282,10 +2290,114 @@ function Background_scroller (score: number) {
     }
 }
 info.onScore(25, function () {
+    list = [sprites.create(img`
+        . . . . . . . 2 . . . . . . . . 
+        . . . . . . 2 2 2 . . . . . . . 
+        . . . . . . 2 2 f 2 . . . . . . 
+        . . . . . . 2 2 f 2 2 2 . . . . 
+        . . . . . . 2 f 5 f f 2 2 . . . 
+        . . . . . 2 2 2 2 2 f 2 2 . . . 
+        . . . . . 2 2 2 2 2 2 1 2 2 . . 
+        . . . . . 2 2 2 2 2 2 1 2 2 . . 
+        . . . . 2 2 2 2 2 5 2 1 1 2 . . 
+        . . . 2 2 2 2 f f f 2 2 2 2 2 . 
+        . . 2 2 2 2 2 2 2 f f 2 2 2 2 . 
+        . . 2 2 2 2 f 5 2 2 2 2 2 2 2 . 
+        . . . 2 2 f f 2 2 2 2 2 2 2 . . 
+        . . . . 2 2 2 2 2 2 2 2 2 2 . . 
+        . . . . . . . 2 2 2 2 2 . . . . 
+        . . . . . . . . . . . . . . . . 
+        `, SpriteKind.weakhealth), sprites.create(img`
+        . . . . . . 9 9 9 9 . . . . . . 
+        . . . . . . 9 9 9 9 . . . . . . 
+        . . . . 9 9 9 9 9 9 9 . . . . . 
+        . . . 9 9 9 9 9 9 9 9 9 . . . . 
+        . . . 9 9 9 9 9 9 9 9 9 9 . . . 
+        . . 9 9 9 9 9 9 9 9 9 1 9 9 . . 
+        . 9 9 9 9 9 9 9 9 9 9 1 9 9 9 . 
+        . 9 9 9 9 9 9 9 9 9 9 1 1 9 9 . 
+        . 9 9 9 9 9 9 9 9 9 9 9 9 9 9 . 
+        . 9 9 9 9 9 9 9 9 9 9 9 9 9 9 . 
+        . 9 9 1 9 9 9 9 9 9 9 9 9 9 9 . 
+        . 9 9 1 1 9 9 9 9 9 9 9 9 9 9 . 
+        . . 9 9 9 9 9 9 9 9 9 9 9 9 9 . 
+        . . . 9 9 9 9 9 9 9 9 9 9 9 . . 
+        . . . . 9 9 9 9 9 9 9 9 9 . . . 
+        . . . . . . 9 9 9 9 . . . . . . 
+        `, SpriteKind.goodhealth), sprites.create(img`
+        . . . . . . 9 9 9 9 . . . . . . 
+        . . . . . . 9 9 9 9 . . . . . . 
+        . . . . 9 9 9 9 9 9 9 . . . . . 
+        . . . 9 9 9 9 9 5 9 9 9 . . . . 
+        . . . 9 9 9 9 5 5 9 9 9 9 . . . 
+        . . 9 9 9 9 5 5 9 9 9 1 9 9 . . 
+        . 9 9 9 9 5 5 9 9 9 9 1 9 9 9 . 
+        . 9 9 9 9 5 5 9 9 9 9 1 1 9 9 . 
+        . 9 9 9 9 9 5 9 9 9 9 9 9 9 9 . 
+        . 9 9 9 9 9 5 5 9 9 9 9 9 9 9 . 
+        . 9 9 1 9 9 9 5 9 9 9 9 9 9 9 . 
+        . 9 9 1 1 9 9 5 5 9 9 9 9 9 9 . 
+        . . 9 9 9 9 9 9 5 9 9 9 9 9 9 . 
+        . . . 9 9 9 9 9 9 9 9 9 9 9 . . 
+        . . . . 9 9 9 9 9 9 9 9 9 . . . 
+        . . . . . . 9 9 9 9 . . . . . . 
+        `, SpriteKind.speedy)]
     boosters = list._pickRandom()
     boosters.setPosition(76, 82)
 })
 info.onScore(10, function () {
+    list = [sprites.create(img`
+        . . . . . . . 2 . . . . . . . . 
+        . . . . . . 2 2 2 . . . . . . . 
+        . . . . . . 2 2 f 2 . . . . . . 
+        . . . . . . 2 2 f 2 2 2 . . . . 
+        . . . . . . 2 f 5 f f 2 2 . . . 
+        . . . . . 2 2 2 2 2 f 2 2 . . . 
+        . . . . . 2 2 2 2 2 2 1 2 2 . . 
+        . . . . . 2 2 2 2 2 2 1 2 2 . . 
+        . . . . 2 2 2 2 2 5 2 1 1 2 . . 
+        . . . 2 2 2 2 f f f 2 2 2 2 2 . 
+        . . 2 2 2 2 2 2 2 f f 2 2 2 2 . 
+        . . 2 2 2 2 f 5 2 2 2 2 2 2 2 . 
+        . . . 2 2 f f 2 2 2 2 2 2 2 . . 
+        . . . . 2 2 2 2 2 2 2 2 2 2 . . 
+        . . . . . . . 2 2 2 2 2 . . . . 
+        . . . . . . . . . . . . . . . . 
+        `, SpriteKind.weakhealth), sprites.create(img`
+        . . . . . . 9 9 9 9 . . . . . . 
+        . . . . . . 9 9 9 9 . . . . . . 
+        . . . . 9 9 9 9 9 9 9 . . . . . 
+        . . . 9 9 9 9 9 9 9 9 9 . . . . 
+        . . . 9 9 9 9 9 9 9 9 9 9 . . . 
+        . . 9 9 9 9 9 9 9 9 9 1 9 9 . . 
+        . 9 9 9 9 9 9 9 9 9 9 1 9 9 9 . 
+        . 9 9 9 9 9 9 9 9 9 9 1 1 9 9 . 
+        . 9 9 9 9 9 9 9 9 9 9 9 9 9 9 . 
+        . 9 9 9 9 9 9 9 9 9 9 9 9 9 9 . 
+        . 9 9 1 9 9 9 9 9 9 9 9 9 9 9 . 
+        . 9 9 1 1 9 9 9 9 9 9 9 9 9 9 . 
+        . . 9 9 9 9 9 9 9 9 9 9 9 9 9 . 
+        . . . 9 9 9 9 9 9 9 9 9 9 9 . . 
+        . . . . 9 9 9 9 9 9 9 9 9 . . . 
+        . . . . . . 9 9 9 9 . . . . . . 
+        `, SpriteKind.goodhealth), sprites.create(img`
+        . . . . . . 9 9 9 9 . . . . . . 
+        . . . . . . 9 9 9 9 . . . . . . 
+        . . . . 9 9 9 9 9 9 9 . . . . . 
+        . . . 9 9 9 9 9 5 9 9 9 . . . . 
+        . . . 9 9 9 9 5 5 9 9 9 9 . . . 
+        . . 9 9 9 9 5 5 9 9 9 1 9 9 . . 
+        . 9 9 9 9 5 5 9 9 9 9 1 9 9 9 . 
+        . 9 9 9 9 5 5 9 9 9 9 1 1 9 9 . 
+        . 9 9 9 9 9 5 9 9 9 9 9 9 9 9 . 
+        . 9 9 9 9 9 5 5 9 9 9 9 9 9 9 . 
+        . 9 9 1 9 9 9 5 9 9 9 9 9 9 9 . 
+        . 9 9 1 1 9 9 5 5 9 9 9 9 9 9 . 
+        . . 9 9 9 9 9 9 5 9 9 9 9 9 9 . 
+        . . . 9 9 9 9 9 9 9 9 9 9 9 . . 
+        . . . . 9 9 9 9 9 9 9 9 9 . . . 
+        . . . . . . 9 9 9 9 . . . . . . 
+        `, SpriteKind.speedy)]
     boosters = list._pickRandom()
     boosters.setPosition(76, 82)
 })
@@ -5527,6 +5639,13 @@ sprites.onOverlap(SpriteKind.hitbox, SpriteKind.Enemy, function (sprite, otherSp
     sprites.destroy(otherSprite, effects.spray, 500)
     info.changeScoreBy(1)
 })
+info.onLifeZero(function () {
+    game.showLongText("Sorry for dragging you into this, I wont let your soul or the knights soul be Corrupted", DialogLayout.Top)
+    game.reset()
+})
+sprites.onOverlap(SpriteKind.goodhealth, SpriteKind.Border, function (sprite, otherSprite) {
+    sprites.destroy(sprite)
+})
 info.onScore(43, function () {
     scene.setBackgroundImage(img`
         9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
@@ -5653,6 +5772,58 @@ info.onScore(43, function () {
     game.showLongText("Thank you for defeating the treary knights now their souls will be freed and so will we from their terror", DialogLayout.Bottom)
 })
 info.onScore(35, function () {
+    list = [sprites.create(img`
+        . . . . . . . 2 . . . . . . . . 
+        . . . . . . 2 2 2 . . . . . . . 
+        . . . . . . 2 2 f 2 . . . . . . 
+        . . . . . . 2 2 f 2 2 2 . . . . 
+        . . . . . . 2 f 5 f f 2 2 . . . 
+        . . . . . 2 2 2 2 2 f 2 2 . . . 
+        . . . . . 2 2 2 2 2 2 1 2 2 . . 
+        . . . . . 2 2 2 2 2 2 1 2 2 . . 
+        . . . . 2 2 2 2 2 5 2 1 1 2 . . 
+        . . . 2 2 2 2 f f f 2 2 2 2 2 . 
+        . . 2 2 2 2 2 2 2 f f 2 2 2 2 . 
+        . . 2 2 2 2 f 5 2 2 2 2 2 2 2 . 
+        . . . 2 2 f f 2 2 2 2 2 2 2 . . 
+        . . . . 2 2 2 2 2 2 2 2 2 2 . . 
+        . . . . . . . 2 2 2 2 2 . . . . 
+        . . . . . . . . . . . . . . . . 
+        `, SpriteKind.weakhealth), sprites.create(img`
+        . . . . . . 9 9 9 9 . . . . . . 
+        . . . . . . 9 9 9 9 . . . . . . 
+        . . . . 9 9 9 9 9 9 9 . . . . . 
+        . . . 9 9 9 9 9 9 9 9 9 . . . . 
+        . . . 9 9 9 9 9 9 9 9 9 9 . . . 
+        . . 9 9 9 9 9 9 9 9 9 1 9 9 . . 
+        . 9 9 9 9 9 9 9 9 9 9 1 9 9 9 . 
+        . 9 9 9 9 9 9 9 9 9 9 1 1 9 9 . 
+        . 9 9 9 9 9 9 9 9 9 9 9 9 9 9 . 
+        . 9 9 9 9 9 9 9 9 9 9 9 9 9 9 . 
+        . 9 9 1 9 9 9 9 9 9 9 9 9 9 9 . 
+        . 9 9 1 1 9 9 9 9 9 9 9 9 9 9 . 
+        . . 9 9 9 9 9 9 9 9 9 9 9 9 9 . 
+        . . . 9 9 9 9 9 9 9 9 9 9 9 . . 
+        . . . . 9 9 9 9 9 9 9 9 9 . . . 
+        . . . . . . 9 9 9 9 . . . . . . 
+        `, SpriteKind.goodhealth), sprites.create(img`
+        . . . . . . 9 9 9 9 . . . . . . 
+        . . . . . . 9 9 9 9 . . . . . . 
+        . . . . 9 9 9 9 9 9 9 . . . . . 
+        . . . 9 9 9 9 9 5 9 9 9 . . . . 
+        . . . 9 9 9 9 5 5 9 9 9 9 . . . 
+        . . 9 9 9 9 5 5 9 9 9 1 9 9 . . 
+        . 9 9 9 9 5 5 9 9 9 9 1 9 9 9 . 
+        . 9 9 9 9 5 5 9 9 9 9 1 1 9 9 . 
+        . 9 9 9 9 9 5 9 9 9 9 9 9 9 9 . 
+        . 9 9 9 9 9 5 5 9 9 9 9 9 9 9 . 
+        . 9 9 1 9 9 9 5 9 9 9 9 9 9 9 . 
+        . 9 9 1 1 9 9 5 5 9 9 9 9 9 9 . 
+        . . 9 9 9 9 9 9 5 9 9 9 9 9 9 . 
+        . . . 9 9 9 9 9 9 9 9 9 9 9 . . 
+        . . . . 9 9 9 9 9 9 9 9 9 . . . 
+        . . . . . . 9 9 9 9 . . . . . . 
+        `, SpriteKind.speedy)]
     boosters = list._pickRandom()
     boosters.setPosition(76, 82)
 })
@@ -5697,6 +5868,7 @@ let MC_animation_start: Sprite = null
 let Teary_knight: Sprite = null
 let enemies = 0
 let boosters: Sprite = null
+let list: Sprite[] = []
 let background_2 = 0
 let MC: Sprite = null
 let Attack: Sprite = null
@@ -5704,7 +5876,6 @@ let Attack_left: Sprite = null
 let MC_with_sword: Sprite = null
 let mySprite: Sprite = null
 let STARTING: Sprite = null
-let list: Sprite[] = []
 Keybinds.setSimulatorKeymap(
 Keybinds.PlayerNumber.ONE,
 Keybinds.CustomKey.W,
@@ -5715,58 +5886,24 @@ Keybinds.CustomKey.LEFT_CLICK,
 Keybinds.CustomKey.RIGHT_CLICK
 )
 scene.setBackgroundImage(assets.image`starting screen`)
-list = [sprites.create(img`
-    . . . . . . . 2 . . . . . . . . 
-    . . . . . . 2 2 2 . . . . . . . 
-    . . . . . . 2 2 f 2 . . . . . . 
-    . . . . . . 2 2 f 2 2 2 . . . . 
-    . . . . . . 2 f 5 f f 2 2 . . . 
-    . . . . . 2 2 2 2 2 f 2 2 . . . 
-    . . . . . 2 2 2 2 2 2 1 2 2 . . 
-    . . . . . 2 2 2 2 2 2 1 2 2 . . 
-    . . . . 2 2 2 2 2 5 2 1 1 2 . . 
-    . . . 2 2 2 2 f f f 2 2 2 2 2 . 
-    . . 2 2 2 2 2 2 2 f f 2 2 2 2 . 
-    . . 2 2 2 2 f 5 2 2 2 2 2 2 2 . 
-    . . . 2 2 f f 2 2 2 2 2 2 2 . . 
-    . . . . 2 2 2 2 2 2 2 2 2 2 . . 
-    . . . . . . . 2 2 2 2 2 . . . . 
+let Game_fixer = sprites.create(img`
     . . . . . . . . . . . . . . . . 
-    `, SpriteKind.weakhealth), sprites.create(img`
-    . . . . . . 9 9 9 9 . . . . . . 
-    . . . . . . 9 9 9 9 . . . . . . 
-    . . . . 9 9 9 9 9 9 9 . . . . . 
-    . . . 9 9 9 9 9 9 9 9 9 . . . . 
-    . . . 9 9 9 9 9 9 9 9 9 9 . . . 
-    . . 9 9 9 9 9 9 9 9 9 1 9 9 . . 
-    . 9 9 9 9 9 9 9 9 9 9 1 9 9 9 . 
-    . 9 9 9 9 9 9 9 9 9 9 1 1 9 9 . 
-    . 9 9 9 9 9 9 9 9 9 9 9 9 9 9 . 
-    . 9 9 9 9 9 9 9 9 9 9 9 9 9 9 . 
-    . 9 9 1 9 9 9 9 9 9 9 9 9 9 9 . 
-    . 9 9 1 1 9 9 9 9 9 9 9 9 9 9 . 
-    . . 9 9 9 9 9 9 9 9 9 9 9 9 9 . 
-    . . . 9 9 9 9 9 9 9 9 9 9 9 . . 
-    . . . . 9 9 9 9 9 9 9 9 9 . . . 
-    . . . . . . 9 9 9 9 . . . . . . 
-    `, SpriteKind.goodhealth), sprites.create(img`
-    . . . . . . 9 9 9 9 . . . . . . 
-    . . . . . . 9 9 9 9 . . . . . . 
-    . . . . 9 9 9 9 9 9 9 . . . . . 
-    . . . 9 9 9 9 9 5 9 9 9 . . . . 
-    . . . 9 9 9 9 5 5 9 9 9 9 . . . 
-    . . 9 9 9 9 5 5 9 9 9 1 9 9 . . 
-    . 9 9 9 9 5 5 9 9 9 9 1 9 9 9 . 
-    . 9 9 9 9 5 5 9 9 9 9 1 1 9 9 . 
-    . 9 9 9 9 9 5 9 9 9 9 9 9 9 9 . 
-    . 9 9 9 9 9 5 5 9 9 9 9 9 9 9 . 
-    . 9 9 1 9 9 9 5 9 9 9 9 9 9 9 . 
-    . 9 9 1 1 9 9 5 5 9 9 9 9 9 9 . 
-    . . 9 9 9 9 9 9 5 9 9 9 9 9 9 . 
-    . . . 9 9 9 9 9 9 9 9 9 9 9 . . 
-    . . . . 9 9 9 9 9 9 9 9 9 . . . 
-    . . . . . . 9 9 9 9 . . . . . . 
-    `, SpriteKind.speedy)]
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . f . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    . . . . . . . . . . . . . . . . 
+    `, SpriteKind.Border)
 let START = sprites.create(img`
     . . . . . . . . . . . . . . . . 
     . . . . . . . . . . . . . . . . 
